@@ -10,12 +10,11 @@ let datos = JSON.parse(localStorage.getItem("ctg_data")) || {
   kmPreviosTra: 0,
   ultimaMantenimiento: null
 };
-
-// Vars para confirm reset
+// Variables para confirmación de reset
 let prevModelo = datos.modelo;
 let prevKmInicio = datos.kmInicio;
-$("modelo").addEventListener("focus", ()=> prevModelo = $("modelo").value);
-$("kmInicio").addEventListener("focus", ()=> prevKmInicio = $("kmInicio").value);
+$(\"modelo\").addEventListener(\"focus\", () => { prevModelo = $(\"modelo\").value; });
+$(\"kmInicio\").addEventListener(\"focus\", () => { prevKmInicio = $(\"kmInicio\").value; });
 
 // Función para acceder aos elementos
 const $ = (id) => document.getElementById(id);
@@ -35,16 +34,16 @@ function renderFormulario() {
     html += '<label>Litros:<input type="number" id="litros" /></label>';
     html += '<label>Coste (€):<input type="number" id="coste" /></label>';
   } else if (
-    tipo === "mantenimiento" ||
-    tipo === "averia" ||
-    tipo === "lavado" ||
-    tipo === "peajes" ||
-    tipo === "gastosvarios"
-  ) {
-    html += '<label>Kilómetros:<input type="number" id="km" /></label>';
-    html += '<label>Coste (€):<input type="number" id="coste" /></label>';
-    html += '<label>Concepto:<input type="text" id="detalle" /></label>';
-  } else if (tipo === "neumatico") {
+      tipo === "mantenimiento" ||
+      tipo === "averia" ||
+      tipo === "lavado" ||
+      tipo === "peajes" ||
+      tipo === "gastosvarios"
+    ) {
+      html += '<label>Kilómetros:<input type="number" id="km" /></label>';
+      html += '<label>Coste (€):<input type="number" id="coste" /></label>';
+      html += '<label>Concepto:<input type="text" id="detalle" /></label>';
+    } else if (tipo === "neumatico") {
     html += '<label>Kilómetros (odómetro actual):<input type="number" id="km" /></label>';
     html += '<label>Coste (€):<input type="number" id="coste" /></label>';
     html += '<label>Posición (delantero/trasero):<input type="text" id="detalle" /></label>';
@@ -62,14 +61,17 @@ function renderFormulario() {
 function resetSeModeloCambia() {
   const nuevoModelo = $("modelo").value;
   const nuevosKm = $("kmInicio").value;
+
   if (datos.registros.length > 0 && (nuevoModelo !== datos.modelo || nuevosKm !== datos.kmInicio)) {
     const msg = `¡Olla! Cambiar modelo ou km fara que se borren ${datos.registros.length} rexistros.
 ¿Segues adiante?`;
     if (!confirm(msg)) {
+      // Revertir a valores previos
       $("modelo").value = prevModelo;
       $("kmInicio").value = prevKmInicio;
       return;
     }
+    // Confirmado: gardar histórico e resetear
     datos.historico.push({ modelo: datos.modelo, kmInicio: datos.kmInicio, registros: datos.registros });
     datos.modelo = nuevoModelo;
     datos.kmInicio = nuevosKm;

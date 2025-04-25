@@ -21,6 +21,7 @@ self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
       .then(cacheRes => {
+        // Se está no caché, devólveo; se non, faino fetch e gardao
         return cacheRes || fetch(event.request).then(fetchRes => {
           return caches.open(CACHE_NAME).then(cache => {
             cache.put(event.request.url, fetchRes.clone());
@@ -28,6 +29,9 @@ self.addEventListener('fetch', event => {
           });
         });
       })
-      .catch(() => caches.match('./index.html'))
+      .catch(() => {
+        // Se todo falla (por ex. ruta non encontrada), serve index.html
+        return caches.match('./index.html');
+      })
   );
 });
