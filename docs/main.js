@@ -28,7 +28,13 @@ function renderFormulario() {
     html += '<label>Kilómetros:<input type="number" id="km" /></label>';
     html += '<label>Litros:<input type="number" id="litros" /></label>';
     html += '<label>Coste (€):<input type="number" id="coste" /></label>';
-  } else if (tipo === "mantenimiento" || tipo === "averia") {
+  } else if (
+    tipo === "mantenimiento" ||
+    tipo === "averia"     ||
+    tipo === "lavado"     ||
+    tipo === "peajes"     ||
+    tipo === "gastosvarios"
+  ) {
     html += '<label>Kilómetros:<input type="number" id="km" /></label>';
     html += '<label>Coste (€):<input type="number" id="coste" /></label>';
     html += '<label>Concepto:<input type="text" id="detalle" /></label>';
