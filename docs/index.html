@@ -1,4 +1,3 @@
-<!-- docs/index.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -36,11 +35,10 @@
         <option value="averia">Avería</option>
         <option value="neumatico">Neumático</option>
         <option value="papeles">Papeles obligatorios</option>
-        <!-- Novos tipos engadidos -->
         <option value="lavado">Lavado</option>
-        <option value="peajes">Peajes</option>
-        <option value="gastosvarios">Gastos varios</option>
-      </select>
+  <option value="peajes">Peajes</option>
+  <option value="gastosvarios">Gastos varios</option>
+</select>
     </label>
     <div id="formulario"></div>
     <button id="guardar">💾 Guardar</button>
@@ -52,16 +50,15 @@
     <div id="registros"></div>
   </section>
 
-  <!-- Se usas a exportación a Excel, inclui xlsx.min.js -->
+  <!-- Se usas a exportación a Excel, incluye xlsx.min.js -->
   <script src="xlsx.min.js"></script>
   <script src="main.js"></script>
   <!-- Rexistro do Service Worker -->
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker
-        .register('sw.js')
-        .then(reg => console.log("Service Worker rexistrado", reg))
-        .catch(err => console.log("Erro no rexistro do SW", err));
+      navigator.serviceWorker.register('sw.js')
+      .then(reg => console.log("Service Worker rexistrado", reg))
+      .catch(err => console.log("Erro no rexistro do SW", err));
     }
   </script>
 </body>
