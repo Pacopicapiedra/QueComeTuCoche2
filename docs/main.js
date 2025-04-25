@@ -11,6 +11,14 @@ let datos = JSON.parse(localStorage.getItem("ctg_data")) || {
   ultimaMantenimiento: null
 };
 
+// Variables para confirmar cambios
+let prevModelo = datos.modelo;
+let prevKmInicio = datos.kmInicio;
+// Gardamos valores previos ao facer focus
+$("modelo").addEventListener("focus", () => { prevModelo = $("modelo").value; });
+$("kmInicio").addEventListener("focus", () => { prevKmInicio = $("kmInicio").value; });
+
+
 // Función para acceder aos elementos
 const $ = (id) => document.getElementById(id);
 
@@ -28,17 +36,11 @@ function renderFormulario() {
     html += '<label>Kilómetros:<input type="number" id="km" /></label>';
     html += '<label>Litros:<input type="number" id="litros" /></label>';
     html += '<label>Coste (€):<input type="number" id="coste" /></label>';
-  } else if (
-      tipo === "mantenimiento" ||
-      tipo === "averia" ||
-      tipo === "lavado" ||
-      tipo === "peajes" ||
-      tipo === "gastosvarios"
-    ) {
-      html += '<label>Kilómetros:<input type="number" id="km" /></label>';
-      html += '<label>Coste (€):<input type="number" id="coste" /></label>';
-      html += '<label>Concepto:<input type="text" id="detalle" /></label>';
-    } else if (tipo === "neumatico") {
+  } else if (tipo === "mantenimiento" || tipo === "averia") {
+    html += '<label>Kilómetros:<input type="number" id="km" /></label>';
+    html += '<label>Coste (€):<input type="number" id="coste" /></label>';
+    html += '<label>Concepto:<input type="text" id="detalle" /></label>';
+  } else if (tipo === "neumatico") {
     html += '<label>Kilómetros (odómetro actual):<input type="number" id="km" /></label>';
     html += '<label>Coste (€):<input type="number" id="coste" /></label>';
     html += '<label>Posición (delantero/trasero):<input type="text" id="detalle" /></label>';
@@ -54,14 +56,39 @@ function renderFormulario() {
 
 // Reinicia os datos se cambia o modelo ou os km iniciais
 function resetSeModeloCambia() {
-  if ($("modelo").value !== datos.modelo || $("kmInicio").value !== datos.kmInicio) {
-    if (datos.registros.length > 0) {
-      datos.historico.push({
-        modelo: datos.modelo,
-        kmInicio: datos.kmInicio,
-        registros: datos.registros
-      });
+  const nuevoModelo = $("modelo").value;
+  const nuevosKm = $("kmInicio").value;
+  if (datos.registros.length > 0 && (nuevoModelo !== datos.modelo || nuevosKm !== datos.kmInicio)) {
+    const msg = `¡Olla! Cambiar modelo ou km fará que se borren ${datos.registros.length} rexistros.
+¿Segues adiante?`;
+    if (!confirm(msg)) {
+      // Revertimos campos ao valor anterior
+      $("modelo").value = prevModelo;
+      $("kmInicio").value = prevKmInicio;
+      return;
     }
+    // Confirmado: gardamos histórico e reset
+    datos.historico.push({
+      modelo: datos.modelo,
+      kmInicio: datos.kmInicio,
+      registros: datos.registros
+    });
+    datos.modelo = nuevoModelo;
+    datos.kmInicio = nuevosKm;
+    datos.registros = [];
+    datos.ultimaRuedaDel = null;
+    datos.ultimaRuedaTra = null;
+    datos.kmPreviosDel = 0;
+    datos.kmPreviosTra = 0;
+    datos.ultimaMantenimiento = null;
+    // Actualizamos prev a novos valores
+    prevModelo = nuevoModelo;
+    prevKmInicio = nuevosKm;
+    guardarDatos();
+    renderResumen();
+  }
+}
+
     datos.modelo = $("modelo").value;
     datos.kmInicio = $("kmInicio").value;
     datos.registros = [];
