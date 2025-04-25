@@ -167,7 +167,7 @@ function renderResumen() {
   const gasto100   = gastoKm * 100;
 
   html += `<p><strong>💶 Gasto total:</strong> ${gastoTotal.toFixed(2)} €</p>`;
-  html += `<p><strong>💶 Gasto total por km:</strong> ${gastoKg.toFixed(3)} €/km</p>`;
+  html += `<p><strong>💶 Gasto total por km:</strong> ${gastoKm.toFixed(3)} €/km</p>`;
   html += `<p><strong>💶 Gasto total cada 100 km:</strong> ${gasto100.toFixed(2)} €/100km</p>`;
 
   $("resumen").innerHTML = html;
