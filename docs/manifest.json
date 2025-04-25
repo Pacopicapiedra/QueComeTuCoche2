@@ -1,8 +1,7 @@
 {
   "name": "ControlaTuCoche",
   "short_name": "Coche",
-  "start_url": "./index.html",
-  "scope": "./",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#007bff",
